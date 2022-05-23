@@ -32,8 +32,11 @@ def init(job):
     snapshot.particles.types = ['sphere','sphere']
     snapshot.configuration.box = [L,L,L,0,0,0]
 
-    with gsd.hoomd.open(name=job.fn('lattice.gsd'),mode='xb') as f:
-        f.append(snapshot)
+    #FIX: lattice.gsd needs to exist first
+    f = open(os.path.join(OUTPUT_DIR, 'lattice.gsd'), 'w')
+    f.close()
+    with gsd.hoomd.open(name=job.fn('lattice.gsd'),mode='xb') as f1:
+        f1.append(snapshot)
 
     job.document['initialized'] = True
 
