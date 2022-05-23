@@ -21,18 +21,19 @@ def init():
     position = position[0:N_particles]
 
     snapshot = gsd.hoomd.Snapshot()
-    snapshot.particles.typeid = [0]*math.floor(job.statepoint.N_particles/2) + [1]*math.floor(job.statepoint.N_particles/2)
+    snapshot.particles.typeid = [0]*math.floor(N_particles/2) + [1]*math.floor(N_particles/2)
     print(math.floor(N_particles/2))
     snapshot.particles.types = ['sphere1','sphere2']
     snapshot.configuration.box = [L,L,L,0,0,0]
-
+    snapshot.particles.types
     #FIX: lattice.gsd needs to exist first
     with gsd.hoomd.open(name='lattice.gsd',mode='xb') as f:
         f.append(snapshot)
+init()
 
 #RANDOMIZE
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu)
+sim = hoomd.Simulation(device=cpu,seed=20)
 
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
