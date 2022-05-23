@@ -22,7 +22,7 @@ def init():
     print(position[0:4])
 
     snapshot = gsd.hoomd.Snapshot()
-    snapthot.particles.N = N_particles
+    snapshot.particles.N = N_particles
     snapshot.particles.typeid = [0]*math.floor(N_particles/2) + [1]*math.floor(N_particles/2)
     print(math.floor(N_particles/2))
     snapshot.particles.types = ['sphere1','sphere2']
