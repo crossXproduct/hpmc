@@ -1,0 +1,19 @@
+Steps to set up and run simulation:
+1. Initialize simulation and set integrator
+2. Initialize system state from file
+3. Set up Writer to write trajectories
+4. Set up Updater to tune trial move size
+5. Run simulation - [simname].run([#ofsteps])
+
+Steps to create randomized initial state:
+1. Define number of particles
+2. Define particle placement and set up periodic box
+3. Write configuration to file
+4. Set up a simulation and integrator, initialize system state from file
+5. Run simulation until system is randomized
+6. Write new configuration to file
+7. Set up a simulation and integrator, initialize system state from file
+8. Set up QuickCompress Updater and add so Simulation
+9. Set up MoveSize Tuner and add to Simulation
+10. Run simulation until QuickCompress completes (check to see if it is complete)
+11. Write final configuration to file
