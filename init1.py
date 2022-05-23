@@ -75,7 +75,7 @@ sim.operations.integrator = mc
 initial_box = sim.state.box
 final_box = hoomd.Box.from_box(initial_box)
 final_volume_fraction = 0.57
-final_box.volume = sim.state.N_particles * V_particle / final_volume_fraction
+final_box.volume = ssim.state.N_particles / 2 * (V_particle1 + V_particle2) / final_volume_fraction
 compress = hoomd.hpmc.update.QuickCompress(trigger=hoomd.trigger.Periodic(10), target_box=final_box)
 sim.operations.updaters.append(compress)
 
