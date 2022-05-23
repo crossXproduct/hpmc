@@ -10,8 +10,9 @@ import hoomd
 import gsd.hoomd
 import os
 
-#INITIALIZE
 N_particles = 100
+#fill in more modifiable vars here
+#INITIALIZE
 def init():
     K = math.ceil(N_particles**(1/3))
     spacing = 1.2
@@ -52,6 +53,7 @@ final_snapshot = sim.state.get_snapshot()
 initial_snapshot.particles.position[0:4]
 final_snapshot.particles.position[0:4]
 
+f = os.system("touch random.gsd")
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 #COMPRESS
