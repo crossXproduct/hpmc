@@ -33,7 +33,7 @@ def init(job):
     snapshot.configuration.box = [L,L,L,0,0,0]
 
     #FIX: lattice.gsd needs to exist first
-    f = open(os.path.join(OUTPUT_DIR, 'lattice.gsd'), 'w')
+    f = open(os.path.join('.', 'lattice.gsd'), 'w')
     f.close()
     with gsd.hoomd.open(name=job.fn('lattice.gsd'),mode='xb') as f1:
         f1.append(snapshot)
