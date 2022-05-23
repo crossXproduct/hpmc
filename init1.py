@@ -27,7 +27,8 @@ def init(job):
     position = position[0:job.statepoint.N_particles]
 
     snapshot = gsd.hoomd.Snapshot()
-    snapshot.particles.typeid = [0,1]*job.statepoint.N_particles/2
+    snapshot.particles.typeid = [0]*math.floor(job.statepoint.N_particles/2) + [1]*math.floor(job.statepoint.N_particles/2)
+    print(math.floor(job.statepoint.N_particles/2))
     snapshot.particles.types = ['sphere','sphere']
     snapshot.configuration.box = [L,L,L,0,0,0]
 
