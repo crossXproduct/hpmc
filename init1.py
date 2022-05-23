@@ -4,7 +4,7 @@
 
 import itertools
 import math
-import numpy as np
+import numpy
 import hoomd
 import gsd.hoomd
 import signac
