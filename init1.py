@@ -10,12 +10,12 @@ import hoomd
 import gsd.hoomd
 import os
 
-N_particles = 100
+N_particles = 4
 #fill in more modifiable vars here
 #INITIALIZE
 def init():
     K = math.ceil(N_particles**(1/3))
-    spacing = 1.2
+    spacing = 2
     L = K*spacing
     x = numpy.linspace(-L/2,L/2,K,endpoint=False)
     position = list(itertools.product(x,repeat=3))
@@ -26,10 +26,10 @@ def init():
     snapshot.particles.N = N_particles
     snapshot.particles.typeid = [0]*math.floor(N_particles/2) + [1]*math.floor(N_particles/2)
     print(math.floor(N_particles/2))
+    print(snapshot.particles.typeid[0:4])
     snapshot.particles.types = ['sphere1','sphere2']
     snapshot.configuration.box = [L,L,L,0,0,0]
     snapshot.particles.types
-    #FIX: lattice.gsd needs to exist first
     with gsd.hoomd.open(name='lattice.gsd',mode='xb') as f:
         f.append(snapshot)
 init()
@@ -40,20 +40,20 @@ sim = hoomd.Simulation(device=cpu,seed=20)
 
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
-mc.shape['sphere2'] = dict(diameter=0.5)
+mc.shape['sphere2'] = dict(diameter=2.0)
 
 sim.operations.integrator = mc
 sim.create_state_from_gsd(filename='lattice.gsd')
 
 initial_snapshot = sim.state.get_snapshot()
 sim.run(10e3)
-mc.translate_moves[0] / sum(mc.translate_moves)
+print(mc.translate_moves[0] / sum(mc.translate_moves))
 print(mc.overlaps)
 final_snapshot = sim.state.get_snapshot()
 print(initial_snapshot.particles.position[0:4])
 print(final_snapshot.particles.position[0:4])
 
-f = os.system("touch random.gsd")
+#f = os.system("touch random.gsd")
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 #COMPRESS
@@ -70,7 +70,7 @@ print(initial_volume_fraction)
 # Assign integrator
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
-mc.shape['sphere2'] = dict(diameter=0.5)
+mc.shape['sphere2'] = dict(diameter=2.0)
 sim.operations.integrator = mc
 
 # Create and assign compression updater (compress sys to desired volume fraction)
