@@ -87,7 +87,7 @@ sim.operations.updaters.append(compress)
 
 # Create and assign step size tuner (optimize MC step size for best performance)
 periodic = hoomd.trigger.Periodic(10)
-tune = hoomd.hpmc.tune.MoveSize.scale_solver(moves=['a'],
+tune = hoomd.hpmc.tune.MoveSize.scale_solver(moves=['d'],
                                              target=0.2,
                                              trigger=periodic,
                                              max_translation_move=0.2,
@@ -97,11 +97,11 @@ sim.operations.tuners.append(tune)
 # Run compression
 while not compress.complete and sim.timestep < 1e6:
     sim.run(1000)
-sim.timestep
+print(sim.timestep)
 if not compress.complete:
     raise RuntimeError("Compression failed to complete")
-mc.d['sphere1']
-mc.d['sphere2']
+print(mc.d['sphere1'])
+print(mc.d['sphere2'])
 
 # Write compressed state to file
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='compressed.gsd')
