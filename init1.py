@@ -35,6 +35,7 @@ def init():
         f.append(snapshot)
 init()
 
+
 #RANDOMIZE
 cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=20)
@@ -56,6 +57,7 @@ print(final_snapshot.particles.position[0:4])
 
 #f = os.system("touch random.gsd")
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
+
 
 #COMPRESS
 cpu = hoomd.device.CPU()
@@ -103,3 +105,31 @@ mc.d['sphere2']
 # Write compressed state to file
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='compressed.gsd')
 print(sim.state.get_snapshot().particles.position[0:4])
+
+
+#EQUILIBRATE
+sim.create_state_from_gsd(filename='compressed.gsd')
+gsd_writer = hoomd.write.GSD(filename='trajectory.gsd',
+                             trigger=hoomd.trigger.Periodic(1000),
+                             mode='xb')
+sim.operations.writers.append(gsd_writer)
+
+# Tune sim step size
+tune = hoomd.hpmc.tune.MoveSize.scale_solver(
+    moves=['d'],
+    target=0.2,
+    trigger=hoomd.trigger.And([
+        hoomd.trigger.Periodic(100),
+        hoomd.trigger.Before(sim.timestep + 5000)
+    ]))
+sim.operations.tuners.append(tune)
+sim.run(5000)
+# Check tuning
+sim.run(100)
+translate_moves = mc.translate_moves
+print(mc.translate_moves[0]/sum(mc.translate_moves))
+
+# Run simulation
+sim.run(1e5)
+
+#DONE! Now on to analysis...
