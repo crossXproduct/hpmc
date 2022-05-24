@@ -48,10 +48,10 @@ sim.create_state_from_gsd(filename='lattice.gsd')
 initial_snapshot = sim.state.get_snapshot()
 sim.run(10e3)
 mc.translate_moves[0] / sum(mc.translate_moves)
-mc.overlaps
+print(mc.overlaps)
 final_snapshot = sim.state.get_snapshot()
-initial_snapshot.particles.position[0:4]
-final_snapshot.particles.position[0:4]
+print(initial_snapshot.particles.position[0:4])
+print(final_snapshot.particles.position[0:4])
 
 f = os.system("touch random.gsd")
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
