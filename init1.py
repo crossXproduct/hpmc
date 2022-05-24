@@ -102,3 +102,4 @@ mc.d['sphere2']
 
 # Write compressed state to file
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='compressed.gsd')
+print(sim.state.get_snapshot().particles.position[0:4])
