@@ -1,6 +1,6 @@
 #TITLE: init1.py
-#MODIFIED: 22-05-22
-#DESCRIPTION: initialize simulation with 100 particles and volume fractions 0.5, 0.55, and 0.58
+#MODIFIED: 22-05-23
+#DESCRIPTION: Set up and run a simulation with 4 particles and volume fraction 0.57.
 
 import itertools
 import math
@@ -12,6 +12,7 @@ import os
 
 N_particles = 4
 #fill in more modifiable vars here
+
 #INITIALIZE
 def init():
     K = math.ceil(N_particles**(1/3))
@@ -37,14 +38,14 @@ init()
 
 
 #RANDOMIZE
+# Initialize sim
 cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=20)
-
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=2.0)
-
 sim.operations.integrator = mc
+# Import initial condition
 sim.create_state_from_gsd(filename='lattice.gsd')
 
 initial_snapshot = sim.state.get_snapshot()
@@ -108,7 +109,18 @@ print(sim.state.get_snapshot().particles.position[0:4])
 
 
 #EQUILIBRATE
+# Initialize sim
+cpu = hoomd.device.CPU()
+sim = hoomd.Simulation(device=cpu,seed=20)
+mc = hoomd.hpmc.integrate.Sphere()
+mc.shape['sphere1'] = dict(diameter=1.0)
+mc.shape['sphere2'] = dict(diameter=2.0)
+sim.operations.integrator = mc
+
+# Import initial condition
 sim.create_state_from_gsd(filename='compressed.gsd')
+
+# Set up trajectory writer
 gsd_writer = hoomd.write.GSD(filename='trajectory.gsd',
                              trigger=hoomd.trigger.Periodic(1000),
                              mode='xb')
