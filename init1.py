@@ -43,7 +43,7 @@ cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=20)
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
-mc.shape['sphere2'] = dict(diameter=2.0)
+mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
 # Import initial condition
 sim.create_state_from_gsd(filename='lattice.gsd')
@@ -74,7 +74,7 @@ print(initial_volume_fraction)
 # Assign integrator
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
-mc.shape['sphere2'] = dict(diameter=2.0)
+mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
 
 # Create and assign compression updater (compress sys to desired volume fraction)
@@ -87,12 +87,14 @@ sim.operations.updaters.append(compress)
 
 # Create and assign step size tuner (optimize MC step size for best performance)
 periodic = hoomd.trigger.Periodic(10)
+
 tune = hoomd.hpmc.tune.MoveSize.scale_solver(moves=['d'],
                                              target=0.2,
                                              trigger=periodic,
                                              max_translation_move=0.2,
                                             )
 sim.operations.tuners.append(tune)
+
 
 # Run compression
 while not compress.complete and sim.timestep < 1e6:
@@ -114,7 +116,7 @@ cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=20)
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
-mc.shape['sphere2'] = dict(diameter=2.0)
+mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
 
 # Import initial condition
