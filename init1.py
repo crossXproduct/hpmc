@@ -10,7 +10,7 @@ import hoomd
 import gsd.hoomd
 import os
 
-N_particles = 27
+N_particles = 28
 #fill in more modifiable vars here
 
 #INITIALIZE
