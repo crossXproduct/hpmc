@@ -24,12 +24,13 @@ def init():
 
     snapshot = gsd.hoomd.Snapshot()
     snapshot.particles.N = N_particles
+    snapshot.particles.position = position
     snapshot.particles.typeid = [0]*math.floor(N_particles/2) + [1]*math.floor(N_particles/2)
     print(math.floor(N_particles/2))
     print(snapshot.particles.typeid[0:4])
     snapshot.particles.types = ['sphere1','sphere2']
     snapshot.configuration.box = [L,L,L,0,0,0]
-    snapshot.particles.types
+    print(snapshot.particles.types)
     with gsd.hoomd.open(name='lattice.gsd',mode='xb') as f:
         f.append(snapshot)
 init()
@@ -77,7 +78,7 @@ sim.operations.integrator = mc
 initial_box = sim.state.box
 final_box = hoomd.Box.from_box(initial_box)
 final_volume_fraction = 0.57
-final_box.volume = ssim.state.N_particles / 2 * (V_particle1 + V_particle2) / final_volume_fraction
+final_box.volume = sim.state.N_particles / 2 * (V_particle1 + V_particle2) / final_volume_fraction
 compress = hoomd.hpmc.update.QuickCompress(trigger=hoomd.trigger.Periodic(10), target_box=final_box)
 sim.operations.updaters.append(compress)
 
