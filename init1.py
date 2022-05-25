@@ -10,7 +10,9 @@ import hoomd
 import gsd.hoomd
 import os
 
-N_particles = 100
+N_particles = 100 #use an even number
+t_equilibrium = 600000
+volume_fraction = 0.58
 #fill in more modifiable vars here
 
 #INITIALIZE
@@ -41,7 +43,7 @@ init()
 # Initialize sim
 cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=20)
-mc = hoomd.hpmc.integrate.Sphere(nselect=1)
+mc = hoomd.hpmc.integrate.Sphere(nselect=1) #nselect is # of trial moves per timestep. Flenner uses 1.
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
@@ -80,7 +82,7 @@ sim.operations.integrator = mc
 # Create and assign compression updater (compress sys to desired volume fraction)
 initial_box = sim.state.box
 final_box = hoomd.Box.from_box(initial_box)
-final_volume_fraction = 0.57
+final_volume_fraction = volume_fraction
 final_box.volume = sim.state.N_particles / 2 * (V_particle1 + V_particle2) / final_volume_fraction
 compress = hoomd.hpmc.update.QuickCompress(trigger=hoomd.trigger.Periodic(10), target_box=final_box)
 sim.operations.updaters.append(compress)
@@ -120,7 +122,7 @@ mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
 
 # Import initial condition
-sim.timestep=0
+sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
 sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
@@ -140,14 +142,13 @@ tune = hoomd.hpmc.tune.MoveSize.scale_solver(
 sim.operations.tuners.append(tune)
 sim.run(5000)
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/N_particles)
-print(sim.timestep)
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
+print(sim.timestep) #compare translate_moves with timestep to check
 # Check tuning
 sim.run(100)
 translate_moves = mc.translate_moves
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/N_particles)
-print(sim.timestep)
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
 # Run simulation
 sim.run(1e5)
