@@ -10,7 +10,7 @@ import hoomd
 import gsd.hoomd
 import os
 
-N_particles = 1000
+N_particles = 100
 #fill in more modifiable vars here
 
 #INITIALIZE
@@ -141,7 +141,9 @@ sim.run(5000)
 # Check tuning
 sim.run(100)
 translate_moves = mc.translate_moves
-print(mc.translate_moves[0]/sum(mc.translate_moves))
+print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves))
+print(sim.timestep)
 
 # Run simulation
 sim.run(1e5)
