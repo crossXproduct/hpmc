@@ -10,8 +10,8 @@ import hoomd
 import gsd.hoomd
 import os
 
-N_particles = 100 #use an even number
-t_equilibrium = 600000
+N_particles = 80000 #use an even number
+t_sim = 4.2e6
 volume_fraction = 0.58
 #fill in more modifiable vars here
 
@@ -151,6 +151,6 @@ print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
 # Run simulation
-sim.run(1e5)
+sim.run(t_sim)
 
 #DONE! Now on to analysis...
