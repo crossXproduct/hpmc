@@ -40,7 +40,7 @@ init()
 #RANDOMIZE
 # Initialize sim
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20)
+sim = hoomd.Simulation(device=cpu,seed=20,nselect=1)
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
@@ -62,7 +62,7 @@ hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 #COMPRESS
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu, seed=20)
+sim = hoomd.Simulation(device=cpu,seed=20,nselect=1)
 sim.create_state_from_gsd(filename='random.gsd')
 
 # Calculate initial volume fraction
@@ -113,7 +113,7 @@ print(sim.state.get_snapshot().particles.position[0:4])
 #EQUILIBRATE
 # Initialize sim
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20)
+sim = hoomd.Simulation(device=cpu,seed=20,nselect=1)
 mc = hoomd.hpmc.integrate.Sphere()
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
@@ -138,6 +138,9 @@ tune = hoomd.hpmc.tune.MoveSize.scale_solver(
     ]))
 sim.operations.tuners.append(tune)
 sim.run(5000)
+print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves))
+print(sim.timestep)
 # Check tuning
 sim.run(100)
 translate_moves = mc.translate_moves
