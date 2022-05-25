@@ -139,13 +139,15 @@ tune = hoomd.hpmc.tune.MoveSize.scale_solver(
 sim.operations.tuners.append(tune)
 sim.run(5000)
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves))
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/N_particles)
+sim.timestep=0
 print(sim.timestep)
 # Check tuning
 sim.run(100)
 translate_moves = mc.translate_moves
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves))
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/N_particles)
+sim.timestep=0
 print(sim.timestep)
 
 # Run simulation
