@@ -40,8 +40,8 @@ init()
 #RANDOMIZE
 # Initialize sim
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20,nselect=1)
-mc = hoomd.hpmc.integrate.Sphere()
+sim = hoomd.Simulation(device=cpu,seed=20)
+mc = hoomd.hpmc.integrate.Sphere(nselect=1)
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
@@ -62,7 +62,7 @@ hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 #COMPRESS
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20,nselect=1)
+sim = hoomd.Simulation(device=cpu, seed=20)
 sim.create_state_from_gsd(filename='random.gsd')
 
 # Calculate initial volume fraction
@@ -72,7 +72,7 @@ initial_volume_fraction = (sim.state.N_particles / 2 * (V_particle1 + V_particle
 print(initial_volume_fraction)
 
 # Assign integrator
-mc = hoomd.hpmc.integrate.Sphere()
+mc = hoomd.hpmc.integrate.Sphere(nselect=1)
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
@@ -113,8 +113,8 @@ print(sim.state.get_snapshot().particles.position[0:4])
 #EQUILIBRATE
 # Initialize sim
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20,nselect=1)
-mc = hoomd.hpmc.integrate.Sphere()
+sim = hoomd.Simulation(device=cpu,seed=20)
+mc = hoomd.hpmc.integrate.Sphere(nselect=1)
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
 sim.operations.integrator = mc
