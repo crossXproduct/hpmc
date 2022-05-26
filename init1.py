@@ -9,8 +9,11 @@ import copy
 import hoomd
 import gsd.hoomd
 import os
+import timeit
 
-N_particles = 80000 #use an even number
+starttime = timeit.default_timer()
+
+N_particles = 10000 #use an even number
 t_sim = 4.2e6
 volume_fraction = 0.58
 #fill in more modifiable vars here
@@ -152,5 +155,8 @@ print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particl
 
 # Run simulation
 sim.run(t_sim)
+
+stoptime = timeit.default_timer()
+print('Run time: ',stop-start)
 
 #DONE! Now on to analysis...
