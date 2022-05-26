@@ -13,9 +13,9 @@ import timeit
 
 starttime = timeit.default_timer()
 
-N_particles = 10000 #use an even number
-t_sim = 4.2e6
-volume_fraction = 0.58
+input(N_particles) #use an even number
+input(t_sim) # = 4.2e6 for 0.58
+input(volume_fraction)
 #fill in more modifiable vars here
 
 #INITIALIZE
