@@ -4,7 +4,7 @@
 
 import itertools
 import math
-import numpy
+import numpy as np
 import copy
 import hoomd
 import gsd.hoomd
@@ -24,7 +24,7 @@ def init():
     K = math.ceil(N_particles**(1/3))
     spacing = 2
     L = K*spacing
-    x = numpy.linspace(-L/2,L/2,K,endpoint=False)
+    x = np.linspace(-L/2,L/2,K,endpoint=False)
     position = list(itertools.product(x,repeat=3))
     position = position[0:N_particles]
     print(position[0:4])
