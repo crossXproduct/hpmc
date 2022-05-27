@@ -12,11 +12,10 @@ import os
 import sys
 import timeit
 
-starttime = timeit.default_timer()
-
 N_particles = int(sys.argv[1]) #use an even number
 t_sim = int(sys.argv[2]) # = 4.2e6 for 0.58
 volume_fraction = np.double(sys.argv[3])
+acceptance_rate = np.double(sys.argv[4])
 #fill in more modifiable vars here
 
 #INITIALIZE
@@ -95,7 +94,7 @@ sim.operations.updaters.append(compress)
 periodic = hoomd.trigger.Periodic(10)
 
 tune = hoomd.hpmc.tune.MoveSize.scale_solver(moves=['d'],
-                                             target=0.2,
+                                             target=acceptance_rate,
                                              trigger=periodic,
                                              max_translation_move=0.2,
                                             )
@@ -138,7 +137,7 @@ sim.operations.writers.append(gsd_writer)
 # Tune sim step size
 tune = hoomd.hpmc.tune.MoveSize.scale_solver(
     moves=['d'],
-    target=0.2,
+    target=acceptance_rate,
     trigger=hoomd.trigger.And([
         hoomd.trigger.Periodic(100),
         hoomd.trigger.Before(sim.timestep + 5000)
@@ -154,6 +153,7 @@ translate_moves = mc.translate_moves
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
+starttime = timeit.default_timer()
 # Run simulation
 sim.run(t_sim)
 
