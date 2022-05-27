@@ -158,6 +158,6 @@ print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particl
 sim.run(t_sim)
 
 stoptime = timeit.default_timer()
-print('Run time: ',stop-start)
+print('Run time: ',stoptime-starttime)
 
 #DONE! Now on to analysis...
