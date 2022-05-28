@@ -4,7 +4,7 @@ import hoomd
 import gsd.hoomd
 import sys
 
-path = string(sys.argv[1])
+path = str(sys.argv[1])
 traj = gsd.hoomd.open(path)
 
 print('frames: ',len(traj))
