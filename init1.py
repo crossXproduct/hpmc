@@ -154,10 +154,13 @@ translate_moves = mc.translate_moves
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
+equiltime = timeit.default_timer()
+
 # Run simulation
 sim.run(t_sim)
 
 stoptime = timeit.default_timer()
-print('Run time: ',stoptime-starttime)
+print('Total run time: ',stoptime-starttime)
+print('Equilibration time: ',stoptime-equiltime)
 
 #DONE! Now on to analysis...
