@@ -1,6 +1,9 @@
 #TITLE: init1.py
 #MODIFIED: 22-05-23
-#DESCRIPTION: Set up and run a simulation with 4 particles and volume fraction 0.57.
+#DESCRIPTION: Set up a simulation with the specified parameters.
+##  ARGS:
+##      N_particles (int)           number of particles
+##      volume_fraction (np.double) packing fraction
 
 import itertools
 import math
@@ -15,8 +18,7 @@ import timeit
 starttime = timeit.default_timer()
 
 N_particles = int(sys.argv[1]) #use an even number
-t_sim = int(sys.argv[2]) # = 4.2e6 for 0.58
-volume_fraction = np.double(sys.argv[3])
+volume_fraction = np.double(sys.argv[2])
 #fill in more modifiable vars here
 
 #INITIALIZE
@@ -115,51 +117,5 @@ print(mc.d['sphere2'])
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='compressed.gsd')
 print(sim.state.get_snapshot().particles.position[0:4])
 
-
-#EQUILIBRATE
-# Initialize sim
-cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20)
-mc = hoomd.hpmc.integrate.Sphere(nselect=1)
-mc.shape['sphere1'] = dict(diameter=1.0)
-mc.shape['sphere2'] = dict(diameter=1.4)
-sim.operations.integrator = mc
-
-# Import initial condition
-sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
-sim.create_state_from_gsd(filename='compressed.gsd')
-
-# Set up trajectory writer
-gsd_writer = hoomd.write.GSD(filename='trajectory.gsd',
-                             trigger=hoomd.trigger.Periodic(1000),
-                             mode='xb')
-sim.operations.writers.append(gsd_writer)
-
-# Tune sim step size
-tune = hoomd.hpmc.tune.MoveSize.scale_solver(
-    moves=['d'],
-    target=0.2,
-    trigger=hoomd.trigger.And([
-        hoomd.trigger.Periodic(100),
-        hoomd.trigger.Before(sim.timestep + 5000)
-    ]))
-sim.operations.tuners.append(tune)
-sim.run(5000)
-print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
-print(sim.timestep) #compare translate_moves with timestep to check
-# Check tuning
-sim.run(100)
-translate_moves = mc.translate_moves
-print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
-
-# Run simulation
-equiltime = timeit.default_timer()
-sim.run(t_sim)
 stoptime = timeit.default_timer()
-
-print('Setup time: ',equiltime-starttime)
-print('Equilibration time: ',stoptime-equiltime)
-
-#DONE! Now on to analysis...
+print('run time: ',stoptime-starttime)
