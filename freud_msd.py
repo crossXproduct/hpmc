@@ -16,7 +16,8 @@ msd = freud.msd.MSD(traj[0].configuration.box)
 
 #create 3D array of particle positions over whole trajectory (N_frames,N_particles,3)
 #positions = np.empty([len(traj),traj[0].particles.N,3])
-positionslist = list(traj[0].particles.position[:])
+positionslist = list()
+positionslist[0] = traj[0].particles.position[:]
 for i in range(0,len(traj)-1):
     positionslist.append(traj[i].particles.position[:])
 
