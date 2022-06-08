@@ -14,7 +14,13 @@ print('first snapshot: ',traj[0].particles.position[0:10])
 print(traj[0].configuration.box,traj[1].configuration.box)
 msd = freud.msd.MSD(traj[0].configuration.box)
 
-msd.compute(traj[:].particles.position[:])
+#create 3D array of particle positions over whole trajectory (N_frames,N_particles,3)
+#positions = np.empty([len(traj),traj[0].particles.N,3])
+positions = traj[0].particles.position[:]
+for i in range(0,len(traj)-1):
+    positions.append(traj[i].particles.position[:])
+
+msd.compute(positions,reset=False)
 
 print('msd[0:10]',msd.msd[0:11])
 print('msd[0:10]',msd.msd[344388:344399])
