@@ -11,8 +11,8 @@ print('frames: ',len(traj))
 print('particles: ',len(traj[0].particles.position))
 print('first snapshot: ',traj[0].particles.position[0:10])
 
-print(traj[0].box,traj[1].box)
-msd = freud.msd.MSD(traj[0].box)
+print(traj[0].configuration.box,traj[1].configuration.box)
+msd = freud.msd.MSD(traj[0].configuration.box)
 
 msd.compute(traj[:].particles.position[:])
 
