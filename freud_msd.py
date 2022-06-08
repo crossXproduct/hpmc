@@ -2,6 +2,7 @@ import freud
 import gsd.hoomd
 import scipy
 import numpy as np
+import sys
 
 path = str(sys.argv[1])
 traj = gsd.hoomd.open(path,'rb')
