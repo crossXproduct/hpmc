@@ -3,6 +3,7 @@ import gsd.hoomd
 import scipy
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 path = str(sys.argv[1])
 traj = gsd.hoomd.open(path,'rb')
@@ -24,7 +25,13 @@ for i in range(1,len(traj)-1):
 positions = np.array(positionslist)
 msd.compute(positions,reset=False)
 
+print('msd size',len(msd.msd))
 print('msd[0:10]',msd.msd[0:11])
-print('msd[0:10]',msd.msd[344388:344399])
+print('msd[last 10]',msd.msd[len(msd.msd)-11:len(msd.msd)-1])
 
 traj.close()
+
+plt.plot(msd.msd,range(0,len(msd.msd)))
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig('msd.png')
