@@ -160,7 +160,7 @@ equiltime = timeit.default_timer()
 sim.run(t_sim)
 
 stoptime = timeit.default_timer()
-print('Total run time: ',stoptime-starttime)
+print('Setup time: ',equiltime-starttime)
 print('Equilibration time: ',stoptime-equiltime)
 
 #DONE! Now on to analysis...
