@@ -156,16 +156,16 @@ print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particl
 
 #set up GCE updater
 grand_canonical = hoomd.hpmc.update.MuVT(['sphere1','sphere2'],trigger=10)
-sim.operations.updaters.append(grand_canonical)
+#sim.operations.updaters.append(grand_canonical)
 narray = list()
 
 # Run simulation
 equiltime = timeit.default_timer()
 for i in range(0,int(t_sim/11)):
     sim.run(11)
-    narray.append(sum(grand_canonical.N))
+    #narray.append(sum(grand_canonical.N))
 stoptime = timeit.default_timer()
-print(narray[0:20])
+#print(narray[0:20])
 
 print('Setup time: ',equiltime-starttime)
 print('Equilibration time: ',stoptime-equiltime)
