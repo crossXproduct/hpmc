@@ -131,7 +131,7 @@ sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
 gsd_writer = hoomd.write.GSD(filename='trajectory.gsd',
-                             trigger=hoomd.trigger.Periodic(1000),
+                             trigger=hoomd.trigger.Periodic(20),
                              mode='xb')
 sim.operations.writers.append(gsd_writer)
 
