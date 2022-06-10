@@ -31,7 +31,10 @@ print('msd[last 10]',msd.msd[len(msd.msd)-11:len(msd.msd)-1])
 
 traj.close()
 
-plt.plot(msd.msd,range(0,len(msd.msd)))
+plt.plot(range(0,len(msd.msd)),msd.msd)
 plt.xscale('log')
 plt.yscale('log')
+plt.xlabel('frames')
+plt.xlim([1,10e2])
+plt.ylabel('msd')
 plt.savefig('msd.png')
