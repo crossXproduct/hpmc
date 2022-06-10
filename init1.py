@@ -153,9 +153,9 @@ print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
 #set up GCE updater
-grand_canonical = hoomd.hpmc.update.MuVT(['sphere1','sphere2'])
-sim.operations.updaters.append(grand_canonical)
-narray = list()
+#grand_canonical = hoomd.hpmc.update.MuVT(['sphere1','sphere2'])
+#sim.operations.updaters.append(grand_canonical)
+#narray = list()
 
 # Run simulation
 equiltime = timeit.default_timer()
