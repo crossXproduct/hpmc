@@ -161,7 +161,7 @@ narray = list()
 
 # Run simulation
 equiltime = timeit.default_timer()
-for i in range(0,t_sim):
+for i in range(0,t_sim/11):
     sim.run(11)
     narray.append(sum(grand_canonical.N))
 stoptime = timeit.default_timer()
