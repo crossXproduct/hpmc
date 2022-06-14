@@ -130,7 +130,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='trajectory.dcd',trigger=hoomd.trigger.Periodic(1000))
+dcd_writer = hoomd.write.DCD(filename='trajectory.dcd',trigger=hoomd.trigger.Periodic(int(t_sim/10)))
 sim.operations.writers.append(dcd_writer)
 
 # Tune sim step size
@@ -159,8 +159,7 @@ print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particl
 
 # Run simulation
 equiltime = timeit.default_timer()
-for i in range(0,t_sim):
-    sim.run(t_sim)
+sim.run(t_sim)
     #narray.append(sum(grand_canonical.N))
 stoptime = timeit.default_timer()
 #print(narray[0:20])
