@@ -163,6 +163,7 @@ sim.run(t_sim)
     #narray.append(sum(grand_canonical.N))
 stoptime = timeit.default_timer()
 #print(narray[0:20])
+print('Iterations: ',sum(mc.translate_moves)/int(N_particles))
 
 print('Setup time: ',equiltime-starttime)
 print('Equilibration time: ',stoptime-equiltime)
