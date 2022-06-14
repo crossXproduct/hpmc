@@ -146,18 +146,23 @@ tune = hoomd.hpmc.tune.MoveSize.scale_solver(
 sim.operations.tuners.append(tune)
 sim.run(5000)
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+print("step size max ",mc.d)
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 print(sim.timestep) #compare translate_moves with timestep to check
 # Check tuning
 sim.run(100)
 translate_moves = mc.translate_moves
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+print("step size max ",mc.d)
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
 # Run simulation
 equiltime = timeit.default_timer()
 sim.run(t_sim)
 stoptime = timeit.default_timer()
+print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+print("step size max ",mc.d)
+print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
 print('Setup time: ',equiltime-starttime)
 print('Equilibration time: ',stoptime-equiltime)
