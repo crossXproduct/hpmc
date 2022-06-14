@@ -11,6 +11,7 @@ import gsd.hoomd
 import os
 import sys
 import timeit
+import time
 
 starttime = timeit.default_timer()
 
@@ -46,7 +47,7 @@ init()
 #RANDOMIZE
 # Initialize sim
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20)
+sim = hoomd.Simulation(device=cpu,seed=time.time())
 mc = hoomd.hpmc.integrate.Sphere(nselect=1) #nselect is # of trial moves per timestep. Flenner uses 1.
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
@@ -68,7 +69,7 @@ hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 #COMPRESS
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu, seed=20)
+sim = hoomd.Simulation(device=cpu, seed=time.time())
 sim.create_state_from_gsd(filename='random.gsd')
 
 # Calculate initial volume fraction
@@ -119,7 +120,7 @@ print(sim.state.get_snapshot().particles.position[0:4])
 #EQUILIBRATE
 # Initialize sim
 cpu = hoomd.device.CPU()
-sim = hoomd.Simulation(device=cpu,seed=20)
+sim = hoomd.Simulation(device=cpu,seed=time.time())
 mc = hoomd.hpmc.integrate.Sphere(nselect=1)
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
