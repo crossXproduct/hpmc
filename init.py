@@ -127,7 +127,7 @@ sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
 dcd_writer = hoomd.write.DCD(filename='equilibrated.dcd',trigger=hoomd.trigger.Periodic(int(t_sim/10)))
-sim.operations.writers.append(gsd_writer)
+sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
 mc.d['sphere1'] = 0.06952022426028356
