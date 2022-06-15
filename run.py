@@ -30,7 +30,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename='equilibrated.gsd')
 
 # Set up trajectory writer
-gsd_writer = hoomd.write.DCD(filename='trajectory.gsd',
+gsd_writer = hoomd.write.DCD(filename='trajectory.dcd',
                              trigger=hoomd.trigger.Periodic(writing_interval),
                              mode='xb')
 sim.operations.writers.append(gsd_writer)
