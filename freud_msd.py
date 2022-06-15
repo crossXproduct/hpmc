@@ -31,10 +31,15 @@ print('msd[last 10]',msd.msd[len(msd.msd)-11:len(msd.msd)-1])
 
 traj.close()
 
-plt.plot(range(0,len(msd.msd)),msd.msd)
+msdfile = open('msd.dat','w')
+for i in range(0,len(msd.msd)):
+    msdfile.write("%4d,%7.5f\n"%(i*10,msd.msd[i]))
+
+plt.plot(range(0,len(msd.msd)*10,10),msd.msd)
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('frames')
-plt.xlim([1,10e2])
+#plt.xlim([0.1,10e2])
+#plt.ylim(0.1,10)
 plt.ylabel('msd')
 plt.savefig('msd.png')
