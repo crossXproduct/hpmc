@@ -137,8 +137,10 @@ int main() {
     int t0_snapshot_sm = t0_sm / dtsave;
     int dt_snapshot_sm = tint_sm / dtsave;
     int dt_snapshot_lg = tint_lg / dtsave;
+    cout << "dt_snapshot_lg = " << dt_snapshot_lg << endl;
     if(dt_snapshot_lg > dcdtimes) dt_snapshot_lg = dcdtimes;
     int t0_snapshot_dif = t0_dif / dtsave;
+    cout << "dt_snapshot_lg = " << dt_snapshot_lg << endl;
 
     //remainder of code is written in terms of snapshots
 
