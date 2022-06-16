@@ -86,6 +86,7 @@ int main() {
     cout << "Enter one at a time:" << endl;
     cout << "# of files | first initial time | smallest time interval | longest time interval | total # of time intervals" << endl;
     cin >> nfiles >> t0_sm >> tint_sm >> tint_lg >> ntints;
+    cout << nfiles << " " << t0_sm << " " << tint_sm << " " << tint_lg << " " << ntints << endl;
     cout << "Specify difference between initial times? (y / n) " << endl;
     cin >> t0_choice_char;
     if(t0_choice_char == 'y' || t0_choice_char == 'Y') {
@@ -104,7 +105,7 @@ int main() {
 // Preparatory
 // ========================================================================== //
     cout << "Defining logistical variables..." << endl;
-    cout << "tint_lg" << tint_lg << endl;
+    cout << "tint_lg = " << tint_lg << endl;
     string filenames_str[SIZE];
     char filename[SIZE];
     for(int i = 0; i < nfiles; i++) {
