@@ -16,7 +16,7 @@ import random
 N_particles = int(sys.argv[1]) #use an even number
 t_sim = int(sys.argv[2]) # = 4.2e6 for 0.58
 volume_fraction = np.double(sys.argv[3])
-writing_interval = np.int(sys.argv[4])
+writing_interval = int(sys.argv[4])
 #fill in more modifiable vars here
 
 starttime = timeit.default_timer()
@@ -158,9 +158,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='trajectory.dcd',
-                             trigger=hoomd.trigger.Periodic(writing_interval),
-                             mode='xb')
+dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval))
 sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
