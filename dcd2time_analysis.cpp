@@ -136,6 +136,7 @@ int main() {
     }
     int t0_snapshot_sm = t0_sm / dtsave;
     int dt_snapshot_sm = tint_sm / dtsave;
+    cout << "tint_lg" << endl;
     int dt_snapshot_lg = tint_lg / dtsave;
     cout << "dt_snapshot_lg = " << dt_snapshot_lg << endl;
     if(dt_snapshot_lg > dcdtimes) dt_snapshot_lg = dcdtimes;
