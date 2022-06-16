@@ -27,7 +27,7 @@ sim.operations.integrator = mc
 
 # Import initial condition
 sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
-sim.create_state_from_gsd(filename='equilibrated.gsd')
+sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
 dcd_writer = hoomd.write.DCD(filename='trajectory.dcd',
