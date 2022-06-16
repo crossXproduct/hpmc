@@ -99,16 +99,16 @@ int main() {
     double a2 = pow(a,2);
     cout << "Enter path to data directory (without ending /): ";
     cin >> path;
-    cout << "Defining logistical variables..." << endl;
-    string filenames_str[SIZE];
-    char filename[SIZE];
-    for(int i = 0; i < nfiles; i++) {
-        filenames_str[i] = path + "/" + "traj" + to_string(i + 1) + ".dcd";
-    }
 
 // ========================================================================== //
 // Preparatory
 // ========================================================================== //
+    cout << "Defining logistical variables..." << endl;
+    string filenames_str[SIZE];
+    char filename[SIZE];
+    for(int i = 0; i < nfiles; i++) {
+        filenames_str[i] = path + "traj" + to_string(i + 1) + ".dcd";
+    }
 
 // ========================================================================== //
 //      Read params from dcd files
