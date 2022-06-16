@@ -1,12 +1,12 @@
 /**
  * TITLE:
- * dcd2time-snapshots.cpp
+ * dcd2time_analysis.cpp
  *
  * AUTHOR:
- * E. Aaron & E. Flenner et al.
+ * E. Aaron
  *
  * MODIFIED:
- * 13 Jan 2022
+ * 16 June 2022
  *
  * DESCRIPTION:
  * Reads a single thermal history recorded as a series of 1 or more DCD trajectory files,
@@ -14,6 +14,7 @@
  * 1. Mean Square Displacement
  * 2. Self-Intermediate Scattering Function (f_s) in 3 dimensions
  * 3. Overlap Function (f_o)
+ * 4. Static structure factor (s_4) as a function of various wave-vector values and particle positions
  *
  * The code takes the following as input:
  * 1. number of files (int)
@@ -26,14 +27,15 @@
  * 6.5 if (6) is y, the time interval between initial times to be used (int)
  * 7. 'q' parameter [wave vector] of self-intermediate scattering function (double)
  * 8. 'a' parameter [packing fraction] of overlap function (double)
- * 9. full absolute path to directory containing trajectory files to be analyzed (string)
+ * 9. maximum wave vector magnitude to use in argument of s_4
+ * 10. full absolute path to directory containing trajectory files to be analyzed (string)
  *  [ex: /project/data/05/run1]
  * in that order. These can be passed to the compiled program by storing them in an input file,
  * separated by newlines, and passing that file as an argument to the program at execution.
  *
- * IMPORTANT NOTE:
+ * NOTE:
  * This program is expanded & heavily revised from Elijah Flenner, et al. "template.c".
- * Flenner's DCD reading header file, "dcd.h", MUST be included for the program to
+ * Flenner's DCD reading header file, "dcd.h", MUST be #included for the program to
  * compile & run.
  */
 
