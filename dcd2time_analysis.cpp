@@ -97,7 +97,7 @@ int main() {
     cout << "'q' parameter | 'a' parameter | packing fraction | max q (s4)" << endl;
     cin >> q >> a >> phi >> qmax;
     double a2 = pow(a,2);
-    cout << "Enter path to data directory (without ending /): ";
+    cout << "Enter path to data directory (without ending /): " << endl;
     cin >> path;
 
 // ========================================================================== //
@@ -141,8 +141,6 @@ int main() {
     cout << "dt_snapshot_lg = " << dt_snapshot_lg << endl;
     if(dt_snapshot_lg > dcdtimes) dt_snapshot_lg = dcdtimes;
     int t0_snapshot_dif = t0_dif / dtsave;
-    cout << "dt_snapshot_lg = " << dt_snapshot_lg << endl;
-
     //remainder of code is written in terms of snapshots
 
 // ========================================================================== //
