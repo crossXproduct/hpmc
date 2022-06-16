@@ -154,6 +154,8 @@ int main() {
     int ratiosm = dt_snapshot_sm; //starting ratio
     if (dt_snapshot_sm == 0) ratiosm = 1; //keep ratio denominator nonzero
     //fill dt_snapshots
+    cout << "t0_dif = " << t0_dif << endl;
+    cout << "dcdtimes = " << dcdtimes << endl;
     cout << "ratiosm = " << ratiosm << endl;
     cout << "(1.0 * dt_snapshot_lg) = " << (1.0 * dt_snapshot_lg) << endl;
     cout << "(1.0 * ratiosm) = " << (1.0 * ratiosm) << endl;
