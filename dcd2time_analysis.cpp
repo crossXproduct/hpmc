@@ -155,6 +155,11 @@ int main() {
     if (dt_snapshot_sm == 0) ratiosm = 1; //keep ratio denominator nonzero
     //fill dt_snapshots
     cout << "ratiosm = " << ratiosm << endl;
+    cout << "(1.0 * dt_snapshot_lg) = " << (1.0 * dt_snapshot_lg) << endl;
+    cout << "(1.0 * ratiosm) = " << (1.0 * ratiosm) << endl;
+    cout << "1.0 / ntints = " << 1.0 / ntints << endl;
+    cout << "pow((1.0 * dt_snapshot_lg) / (1.0 * ratiosm), 1.0 / ntints) = " << pow((1.0 * dt_snapshot_lg) / (1.0 * ratiosm), 1.0 / ntints) << endl;
+
     dt_snapshots.push_back(snapshot);
     ratio = pow((1.0 * dt_snapshot_lg) / (1.0 * ratiosm), 1.0 / ntints);
     cout << "Log spacing ratio: " << ratio << endl;
