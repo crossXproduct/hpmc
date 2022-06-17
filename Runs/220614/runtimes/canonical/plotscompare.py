@@ -15,7 +15,7 @@ plt.xlim(left=0)
 plt.xscale('log')
 plt.yscale('log')
 plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
-plt.legend(['Flenner','HOOMD-blue'])
+plt.legend(['HOOMD-blue','Flenner'])
 plt.title('Mean Squared Displacement')
 plt.xlabel('time (MC steps)')
 plt.ylabel('msd (diameters)')
