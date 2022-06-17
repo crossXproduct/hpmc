@@ -1,0 +1,66 @@
+path = input("Path to run folders: ")
+name = os.path.basename(path)
+
+TIME,Msd,Fo,Fsx,Fsy,Fsz = np.loadtxt(name + '/output.dat',unpack=True,dtype=np.double,delimiter=',')
+TVALS, MSD, MSD_ERR, FO, FO_ERR, FSX, FSX_ERR, FSY, FSY_ERR, FSZ, FSZ_ERR = np.loadtxt(path + '/averages' + na
+me + '.dat', delimiter=',', unpack=True)
+
+#Plots
+plt.errorbar(TVALS, MSD, yerr=MSD_ERR, fmt='', ecolor='black', barsabove=True, marker='.', color='green')
+plt.xscale('log')
+plt.yscale('log')
+plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+plt.title('Mean Square Displacement as a Function of Time')
+plt.xlabel('t')
+plt.ylabel('MSD')
+plt.savefig(path + "/msd_avgerr.png")
+plt.clf()
+
+plt.errorbar(TVALS, FO, yerr=FO_ERR, fmt='', ecolor='black', barsabove=True, marker='.', color='green')
+plt.xscale('log')
+plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+plt.title('Overlap Function')
+plt.xlabel('t')
+plt.ylabel('F_o')
+plt.savefig(path + "/fo_avgerr.png")
+plt.clf()
+
+plt.errorbar(TVALS, FSX, yerr=FSX_ERR, fmt='', ecolor='black', barsabove=True, marker='.', color='green')
+plt.errorbar(TVALS, FSY, yerr=FSY_ERR, fmt='', ecolor='black', barsabove=True, marker='.', color='yellow')
+plt.errorbar(TVALS, FSZ, yerr=FSZ_ERR, fmt='', ecolor='black', barsabove=True, marker='.', color='red')
+plt.xscale('log')
+plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+plt.title('Self-Intermediate Scattering Function')
+plt.xlabel('t')
+plt.ylabel('F_s')
+plt.legend(["X", "Y", "Z"])
+plt.savefig(path + "/fs_avgerr.png")
+
+plt.scatter(TIME,Msd)
+plt.xscale('log')
+plt.yscale('log')
+plt.title('Mean Squared Displacement')
+plt.xlabel('time interval (MC steps)')
+plt.ylabel('msd (diameters)')
+plt.savefig('msd.png')
+plt.clf()
+
+plt.scatter(TIME,Fo)
+plt.xscale('log')
+plt.title('Overlap')
+plt.xlabel('time interval (MC steps)')
+plt.ylabel('f_o (diameters)')
+plt.savefig('fo.png')
+plt.clf()
+
+plt.scatter(TIME,Fsx)
+plt.xscale('log')
+plt.scatter(TIME,Fsy)
+plt.xscale('log')
+plt.scatter(TIME,Fsz)
+plt.xscale('log')
+plt.title('Self-Intermediate Scattering Function')
+plt.legend(['x','y','z'])
+plt.xlabel('time interval (MC steps)')
+plt.ylabel('f_s (diameters)')
+plt.savefig('fs.png')
