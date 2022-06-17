@@ -5,7 +5,7 @@ import os
 path = input("Path to run folders: ")
 name = os.path.basename(path)
 
-TIME,Msd,Fo,Fsx,Fsy,Fsz = np.loadtxt(name + '/output.dat',unpack=True,dtype=np.double,delimiter=',')
+TIME,Msd,Fo,Fsx,Fsy,Fsz = np.loadtxt(name + '/output_1k.dat',unpack=True,dtype=np.double,delimiter=',')
 TVALS, MSD, MSD_ERR, FO, FO_ERR, FSX, FSX_ERR, FSY, FSY_ERR, FSZ, FSZ_ERR = np.loadtxt(path + '/averages_flenner_10k' + '.dat', delimiter=',', unpack=True)
 
 #Plots
