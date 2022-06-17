@@ -9,12 +9,13 @@ import sys
 import timeit
 import random
 
-starttime = timeit.default_timer()
-random_seed = int(random.randrange(0,65535))
-
 N_particles = int(sys.argv[1]) #use an even number
 t_sim = int(sys.argv[2]) # = 4.2e6 for 0.58
 volume_fraction = np.double(sys.argv[3])
+writing_interval = np.int(sys.argv[4])
+
+starttime = timeit.default_timer()
+random_seed = int(random.randrange(0,65535))
 
 #Set up simulation
 cpu = hoomd.device.CPU()
@@ -26,13 +27,13 @@ sim.operations.integrator = mc
 
 # Import initial condition
 sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
-sim.create_state_from_gsd(filename='equilibrated.gsd')
+sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-gsd_writer = hoomd.write.GSD(filename='trajectory.gsd',
-                             trigger=hoomd.trigger.Periodic(10),
+dcd_writer = hoomd.write.DCD(filename='trajectory.dcd',
+                             trigger=hoomd.trigger.Periodic(writing_interval),
                              mode='xb')
-sim.operations.writers.append(gsd_writer)
+sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
 mc.d['sphere1'] = 0.06952022426028356 #optimized for phi=0.59

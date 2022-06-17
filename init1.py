@@ -132,10 +132,8 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
-gsd_writer = hoomd.write.GSD(filename='equilibrated.gsd',
-                             trigger=hoomd.trigger.Periodic(10),
-                             mode='xb')
-sim.operations.writers.append(gsd_writer)
+dcd_writer = hoomd.write.DCD(filename='equilibrated.dcd',trigger=hoomd.trigger.Periodic(int(t_sim/10)))
+sim.operations.writers.append(dcd_writer)
 
 # Tune sim step size
 tune = hoomd.hpmc.tune.MoveSize.scale_solver(
@@ -158,13 +156,18 @@ print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 
+#set up GCE updater
+#grand_canonical = hoomd.hpmc.update.MuVT(['sphere1','sphere2'])
+#sim.operations.updaters.append(grand_canonical)
+#narray = list()
+
 # Run simulation
 equiltime = timeit.default_timer()
 sim.run(t_sim)
+    #narray.append(sum(grand_canonical.N))
 stoptime = timeit.default_timer()
-print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
+#print(narray[0:20])
+print('Iterations: ',sum(mc.translate_moves)/int(N_particles))
 
 print('Setup time: ',equiltime-starttime)
 print('Equilibration time: ',stoptime-equiltime)
