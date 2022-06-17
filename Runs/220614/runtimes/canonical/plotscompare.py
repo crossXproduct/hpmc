@@ -1,3 +1,7 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
 path = input("Path to run folders: ")
 name = os.path.basename(path)
 
