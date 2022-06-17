@@ -11,7 +11,7 @@ TVALS, MSD, MSD_ERR, FO, FO_ERR, FSX, FSX_ERR, FSY, FSY_ERR, FSZ, FSZ_ERR = np.l
 #Plots
 plt.errorbar(TVALS, MSD, yerr=MSD_ERR, fmt='', ecolor='black', barsabove=True, marker='o', color='green')
 plt.scatter(TIME,Msd,marker='^',color='red')
-plt.xlim(left=0)
+#plt.xlim(left=0)
 plt.xscale('log')
 plt.yscale('log')
 plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
@@ -24,7 +24,7 @@ plt.clf()
 
 plt.errorbar(TVALS, FO, yerr=FO_ERR, fmt='', ecolor='black', barsabove=True, marker='o', color='green')
 plt.scatter(TIME,Fo,marker='^',color='red')
-plt.xlim(left=0)
+#plt.xlim(left=0)
 plt.xscale('log')
 plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
 plt.legend(['Flenner','HOOMD-blue'])
@@ -40,7 +40,7 @@ plt.errorbar(TVALS, FSZ, yerr=FSZ_ERR, fmt='', ecolor='black', barsabove=True, m
 plt.scatter(TIME,Fsx,marker='^',color='red')
 plt.scatter(TIME,Fsy,marker='^',color='green')
 plt.scatter(TIME,Fsz,marker='^',color='blue')
-plt.xlim(left=0)
+#plt.xlim(left=0)
 plt.xscale('log')
 plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
 plt.legend(['Flenner X','Flenner Y','Flenner Z','HOOMD-blue X','HOOMD-blue Y','HOOMD-blue Z'])
