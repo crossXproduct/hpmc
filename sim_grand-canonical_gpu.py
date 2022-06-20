@@ -166,7 +166,12 @@ mc.d['sphere1'] = 0.06952022426028356 #optimized for phi=0.59
 mc.d['sphere2'] = 0.06952022426028356
 
 # Set up GCE
-muvt = hoomd.hpmc.update.MuVT(['sphere1','sphere2'],ngibbs=1)
+muvt = hoomd.hpmc.update.MuVT(['sphere1','sphere2'],ngibbs=1,max_volume_rescale=1,trigger=1)
+muvt.fugacity['sphere1'] = 1.2*N_particles*volume_fraction
+print(muvt.fugacity['sphere1'])
+muvt.fugacity['sphere2'] = 0.85714*N_particles*volume_fraction
+print(muvt.fugacity['sphere2'])
+
 sim.operations.updaters.append(muvt)
 #narray = list()
 
@@ -174,9 +179,10 @@ sim.operations.updaters.append(muvt)
 starttime = timeit.default_timer()
 sim.run(t_sim)
 stoptime = timeit.default_timer()
-#print("average particle number = ",sum(muvt.N)/t_sim)
-#print("total particle insertions = ",sum(muvt.insert_moves))
-#print("total particle removals = ",sum(muvt.remove_moves))
+print()
+print("average particle number = ",sum(muvt.N)/t_sim)
+print("total particle insertions = ",sum(muvt.insert_moves))
+print("total particle removals = ",sum(muvt.remove_moves))
 volume_fraction = (sim.state.N_particles / 2 * (V_particle1 + V_particle2) / sim.state.box.volume)
 print("ending volume fraction = ",volume_fraction)
 
