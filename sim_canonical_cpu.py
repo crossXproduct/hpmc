@@ -127,7 +127,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
-gsd_writer = hoomd.write.GSD(filename='equilibrated.gsd',trigger=hoomd.trigger.Periodic(writing_interval))
+gsd_writer = hoomd.write.GSD(filename='equilibrated.gsd',trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
 sim.operations.writers.append(gsd_writer)
 
 # Set sim step size
@@ -158,7 +158,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval))
+dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
 sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
