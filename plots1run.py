@@ -6,7 +6,7 @@ TIME,MSD,FO, FSX,FSY,FSZ = np.loadtxt("output.dat",delimiter=',',unpack=True,dty
 plt.scatter(TIME,MSD)
 plt.yscale("log")
 plt.xscale("log")
-#plt.xlim(left=0.1)
+plt.xlim(left=100)
 #plt.ylim(bottom=0.1)
 plt.title("Mean squared displacement")
 plt.xlabel("mc steps")
