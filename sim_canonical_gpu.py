@@ -14,9 +14,10 @@ import timeit
 import random
 
 N_particles = int(sys.argv[1]) #use an even number
-t_sim = int(sys.argv[2]) # = 4.2e6 for 0.58
-volume_fraction = np.double(sys.argv[3])
-writing_interval = int(sys.argv[4])
+s_eq = int(sys.argv[2]) # = 4.2e6 for 0.58
+s_run = int(sys.argv[3])
+volume_fraction = np.double(sys.argv[4])
+writing_interval = int(sys.argv[5])
 #fill in more modifiable vars here
 
 starttime = timeit.default_timer()
@@ -136,7 +137,7 @@ mc.d['sphere2'] = 0.06952022426028356
 
 # Run equilibration
 equiltime = timeit.default_timer()
-sim.run(t_sim)
+sim.run(s_eq)
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
@@ -167,7 +168,7 @@ mc.d['sphere2'] = 0.06952022426028356
 
 # Run sim
 starttime = timeit.default_timer()
-sim.run(t_sim)
+sim.run(s_run)
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
