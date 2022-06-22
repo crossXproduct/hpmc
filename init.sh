@@ -9,7 +9,9 @@
 read;
 cp $SLURM_SUBMIT_DIR/init.in $TMPDIR
 "$REPLY" >> init.in
-cp /fs/project/PHS0243/crossproduct/simulations/hoomd_init.py $TMPDIR
+cd /fs/project/PHS0243/crossproduct/simulations/
+cp hoomd_init.py $TMPDIR
+cd $TMPDIR
 module load miniconda3
 source activate sims
 python3 hoomd_init.py $REPLY
