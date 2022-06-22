@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-TIME,MSD,FO,FSX,FSY,FSZ = np.loadtxt("output_new.dat",delimiter=',',unpack=True,dtype=np.double)
+TIME,MSD,FO,FSX,FSY,FSZ = np.loadtxt("output.dat",delimiter=',',unpack=True,dtype=np.double)
 
 plt.scatter(TIME,MSD)
 plt.yscale("log")
