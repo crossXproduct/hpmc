@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 TIME_switch,MSD_switch,FO_switch,FSX_switch,FSY_switch,FSZ_switch = np.loadtxt("output_switch.dat",delimiter=',',unpack=True,dtype=np.double)
-TIME,MSD,FO,FSX,FSY,FSZ = np.loadtxt("output.dat",delimiter=',',unpack=True,dtype=np.double)
+TIME,MSD,FO,FSX,FSY,FSZ = np.loadtxt("output_new.dat",delimiter=',',unpack=True,dtype=np.double)
 TIME_old,MSD_old,FO_old,FSX_old,FSY_old,FSZ_old = np.loadtxt("output_old.dat",delimiter=',',unpack=True,dtype=np.double)
 
 plt.scatter(TIME_switch,MSD_switch)
