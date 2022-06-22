@@ -15,10 +15,7 @@ import timeit
 import random
 
 N_particles = int(sys.argv[1]) #use an even number
-s_eq = int(sys.argv[2]) # = 4.2e6 for 0.58
-s_run = int(sys.argv[3])
-volume_fraction = np.double(sys.argv[4])
-writing_interval = int(sys.argv[5])
+volume_fraction = np.double(sys.argv[2])
 #fill in more modifiable vars here
 
 starttime = timeit.default_timer()
