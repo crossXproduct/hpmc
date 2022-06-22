@@ -3,6 +3,7 @@
 #initialize
 echo "Initializing System..."
 CONTINUE=False
+echo $CONTINUE
 RESTART=$(sbatch init.sh CONTINUE | awk 'NR==2{print $0}')
 echo $RESTART
 while[$RESTART -eq "True"];
