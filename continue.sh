@@ -2,7 +2,7 @@
 
 #initialize
 echo "Initializing System..."
-CONTINUE="False"
+CONTINUE=False
 CONTINUE=$(sbatch init.sh < CONTINUE)
 while[$CONTINUE -eq "True"];
 do CONTINUE=$(sbatch init.sh < CONTINUE)
