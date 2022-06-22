@@ -12,9 +12,6 @@ cp $SLURM_SUBMIT_DIR/init.in $TMPDIR
 cp /fs/project/PHS0243/crossproduct/simulations/hoomd_init.py $TMPDIR
 module load miniconda3
 source activate sims
-CONTINUE=$(python3 hoomd_init.py < init.in)
-if[$CONTINUE -eq "True"]; then
-    cp restart.gsd $SLURM_SUBMIT_DIR
-else
-    cp compressed.gsd $SLURM_SUBMIT_DIR
-fi
+python3 hoomd_init.py $REPLY
+cp restart.gsd $SLURM_SUBMIT_DIR
+cp compressed.gsd $SLURM_SUBMIT_DIR
