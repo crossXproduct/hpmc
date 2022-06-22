@@ -21,7 +21,7 @@ writing_interval = int(sys.argv[5])
 #fill in more modifiable vars here
 
 starttime = timeit.default_timer()
-random_seed = int(random.randrange(0,65535))
+random_seed = 20#int(random.randrange(0,65535))
 
 #INITIALIZE
 def init():

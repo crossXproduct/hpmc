@@ -190,6 +190,8 @@ int main() {
 // ========================================================================== //
 //      Calculate S4 params
     //cout << "phi=" << phi << endl;
+    float L = pow(0.980176*N/phi,0.333333333); //box length
+    cout << "L(" << phi << ") = " << L << endl;
 /*
     //cout << "L(" << phi << ") = " << L << endl;
     cout << "Calculating s4 parameters..." << endl;
@@ -501,7 +503,7 @@ int main() {
 // ========================================================================== //
 
     cout << "Normalizing & printing..." << endl;
-    ofstream outfile("output.dat"); //open output files
+    ofstream outfile("output_old.dat"); //open output files
     //ofstream s4file("s4.dat");
     /*
     s4file << fixed << setprecision(8) << "time | q" << ",";

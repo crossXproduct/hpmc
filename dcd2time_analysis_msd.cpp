@@ -191,6 +191,7 @@ int main() {
 //      Calculate S4 params
     //cout << "phi=" << phi << endl;
     float L = pow(0.980176*N/phi,0.333333333); //box length
+    cout << "L(" << phi << ") = " << L << endl;
 /*
     //cout << "L(" << phi << ") = " << L << endl;
     cout << "Calculating s4 parameters..." << endl;
