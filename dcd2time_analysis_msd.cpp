@@ -109,7 +109,7 @@ int main() {
     string filenames_str[SIZE];
     char filename[SIZE];
     for(int i = 0; i < nfiles; i++) {
-        filenames_str[i] = path + "/" + "trajectory.dcd";
+        filenames_str[i] = path + "trajectory.dcd";
     }
 
 // ========================================================================== //
@@ -503,7 +503,7 @@ int main() {
 // ========================================================================== //
 
     cout << "Normalizing & printing..." << endl;
-    ofstream outfile("output1.dat"); //open output files
+    ofstream outfile("output.dat"); //open output files
     //ofstream s4file("s4.dat");
     /*
     s4file << fixed << setprecision(8) << "time | q" << ",";
