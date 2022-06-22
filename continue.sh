@@ -4,6 +4,7 @@
 echo "Initializing System..."
 CONTINUE=False
 RESTART=$(sbatch init.sh CONTINUE | awk 'NR==2{print $1}')
+print $RESTART
 while[$RESTART -eq "True"];
 do
 CONTINUE=$(sbatch init.sh RESTART | awk 'NR==2{print $1}')
