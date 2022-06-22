@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --account=PHS0243
-#SBATCH --time=7-00:00:00
+#SBATCH --time=00:01:00
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1
 #SBATCH --mail-type=BEGIN,END,FAIL
@@ -12,6 +12,6 @@ cp hoomd_init.py $TMPDIR
 cd $TMPDIR
 module load miniconda3
 source activate sims
-python3 hoomd_init.py < init.in
+python3 hoomd_init.py 400000 0.58
 cp restart.gsd $SLURM_SUBMIT_DIR
 cp compressed.gsd $SLURM_SUBMIT_DIR
