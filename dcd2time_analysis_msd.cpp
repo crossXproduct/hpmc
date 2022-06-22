@@ -109,7 +109,7 @@ int main() {
     string filenames_str[SIZE];
     char filename[SIZE];
     for(int i = 0; i < nfiles; i++) {
-        filenames_str[i] = path + "/" + "traj" + to_string(i + 1) + ".dcd";
+        filenames_str[i] = path + "/trajectory.dcd";
     }
 
 // ========================================================================== //
@@ -421,9 +421,9 @@ int main() {
             for(int i = 0; i < N; i++) { //loop over particles
             //cout << "particle " << i << endl;
                 //displacements
-                dx = (xf[i] - cm_x.at(tf_snapshot)) - (x0[i] - cm_x.at(t0_snapshot)); //enlarge to size tint_lg/dtsave and use tf_snapshot, t0_snapshot as indices
-                dy = (yf[i] - cm_y.at(tf_snapshot)) - (y0[i] - cm_y.at(t0_snapshot));
-                dz = (zf[i] - cm_z.at(tf_snapshot)) - (z0[i] - cm_z.at(t0_snapshot));
+                dx = min(abs((xf[i] - cm_x.at(tf_snapshot)) - (x0[i] - cm_x.at(t0_snapshot))),L-abs((xf[i] - cm_x.at(tf_snapshot)) - (x0[i] - cm_x.at(t0_snapshot)))); //enlarge to size tint_lg/dtsave and use tf_snapshot, t0_snapshot as indices
+                dy = min(abs((yf[i] - cm_y.at(tf_snapshot)) - (y0[i] - cm_y.at(t0_snapshot))),L-abs((yf[i] - cm_y.at(tf_snapshot)) - (y0[i] - cm_y.at(t0_snapshot))));
+                dz = min(abs((zf[i] - cm_z.at(tf_snapshot)) - (z0[i] - cm_z.at(t0_snapshot))),L-abs((zf[i] - cm_z.at(tf_snapshot)) - (z0[i] - cm_z.at(t0_snapshot))));
                 //self-intermediate scattering function
                 fs_x.at(cindex) += cos(q * dx);
                 fs_y.at(cindex) += cos(q * dy);
@@ -503,7 +503,7 @@ int main() {
 // ========================================================================== //
 
     cout << "Normalizing & printing..." << endl;
-    ofstream outfile("output_old.dat"); //open output files
+    ofstream outfile("output.dat"); //open output files
     //ofstream s4file("s4.dat");
     /*
     s4file << fixed << setprecision(8) << "time | q" << ",";

@@ -94,6 +94,7 @@ final_volume_fraction = volume_fraction
 final_box.volume = sim.state.N_particles / 2 * (V_particle1 + V_particle2) / final_volume_fraction
 compress = hoomd.hpmc.update.QuickCompress(trigger=hoomd.trigger.Periodic(10), target_box=final_box)
 sim.operations.updaters.append(compress)
+print("box length = ",final_box.volume**(1.0/3.0))
 
 # Set max step size
 mc.d['sphere1'] = 0.06952022426028356 #optimized for phi=0.59
@@ -128,7 +129,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
-gsd_writer = hoomd.dump.gsd(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
+gsd_writer = hoomd.write.GSD(filename='equilibrated.gsd',trigger=hoomd.trigger.Periodic(writing_interval))
 sim.operations.writers.append(gsd_writer)
 
 # Set sim step size
@@ -159,7 +160,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-dcd_writer = hoomd.dump.dcd(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
+dcd_writer = hoomd.write.DCD(filename='trajectory_fix.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
 sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
