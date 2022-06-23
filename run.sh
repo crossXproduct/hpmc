@@ -12,6 +12,6 @@ cp hoomd_run.py $TMPDIR
 cd $TMPDIR
 module load miniconda3
 source activate sims
-python3 hoomd_run.py 400000 0.58
+python3 hoomd_run.py 36300000 18150 10 False
 cp restart.gsd $SLURM_SUBMIT_DIR
 cp trajectory.dcd $SLURM_SUBMIT_DIR

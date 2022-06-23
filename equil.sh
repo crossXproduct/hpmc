@@ -12,6 +12,6 @@ cp hoomd_equil.py $TMPDIR
 cd $TMPDIR
 module load miniconda3
 source activate sims
-python3 hoomd_equil.py 400000 0.58
+python3 hoomd_equil.py 18150000 18150 10 False
 cp restart.gsd $SLURM_SUBMIT_DIR
 cp equilibrated.gsd $SLURM_SUBMIT_DIR
