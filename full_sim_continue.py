@@ -144,7 +144,7 @@ mc.d['sphere2'] = 0.06952022426028356
 
 # Import initial condition
 if restart_equil==True: #if continuing incomplete run, start from intermediate state last saved
-    sim.create_state_from_gsd(filename=job.fn('restart.gsd'))
+    sim.create_state_from_gsd(filename=job.fn('restart_equil.gsd'))
 
 else:
     sim.create_state_from_gsd(filename="compressed.gsd") #otherwise start from last completed step
@@ -200,7 +200,7 @@ try:
         current_time = timeit.default_timer() - starttime
         if (current_time + sim.walltime >= walltime): break
 finally: #if can't complete full run, save intermediate state to GSD file for continuation
-    hoomd.write.GSD.write(state=sim.state,mode='wb',filename="restart.gsd")
+    hoomd.write.GSD.write(state=sim.state,mode='wb',filename="restart_run.gsd")
     walltime = sim.device.communicator.walltime
     #print(f'run ended on step {sim.timestep} 'f'after {walltime} seconds')
     print("Restart run? ",restart_run)
