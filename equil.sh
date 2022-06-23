@@ -6,15 +6,12 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 
 #IMPORTANT: this template is meant to be used only by the continue.sh "driver" script for submitting continuous runs.
-read;
 cp $SLURM_SUBMIT_DIR/equil.in $TMPDIR
-"$REPLY" >> equil.in
-cp /fs/project/PHS0243/crossproduct/simulations/hoomd_equil.py $TMPDIR
+cd /fs/project/PHS0243/crossproduct/simulations/
+cp hoomd_equil.py $TMPDIR
+cd $TMPDIR
 module load miniconda3
 source activate sims
-CONTINUE=$(python3 hoomd_equil.py < equil.in)
-if[$CONTINUE -eq "True"]; then
-    cp restart.gsd $SLURM_SUBMIT_DIR
-else
-    cp equilibrated.gsd $SLURM_SUBMIT_DIR
-fi
+python3 hoomd_equil.py 400000 0.58
+cp restart.gsd $SLURM_SUBMIT_DIR
+cp equilibrated.gsd $SLURM_SUBMIT_DIR
