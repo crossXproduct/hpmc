@@ -170,6 +170,7 @@ while sim.timestep < s_run:
     dcd_writer = hoomd.write.DCD(filename='traj'+str(nfiles)+'.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
     sim.operations.writers[0] = dcd_writer
     sim.run(min([filesteps,s_run-sim.timestep]))
+    print(min([filesteps,s_run-sim.timestep]))
     nfiles += 1
 stoptime = timeit.default_timer()
 
