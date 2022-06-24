@@ -136,8 +136,12 @@ mc.d['sphere2'] = 0.06952022426028356
 # Run equilibration
 sim.run(s_eq)
 equiltime = timeit.default_timer() - inittime
+print(timeit.default_timer())
+print(inittime)
+print(equiltime)
 equilsteps = sim.timestep
 rate = equilsteps/equiltime #number of mc steps performed per second
+print("step rate ",rate)
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
 print("attempted moves: ",sum(mc.translate_moves)/int(N_particles))
@@ -170,7 +174,7 @@ while sim.timestep < s_run:
     dcd_writer = hoomd.write.DCD(filename='traj'+str(nfiles)+'.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
     sim.operations.writers[0] = dcd_writer
     sim.run(min([filesteps,s_run-sim.timestep]))
-    print(min([filesteps,s_run-sim.timestep]))
+    print("saving traj"+str(nfiles)+'.dcd')
     nfiles += 1
 stoptime = timeit.default_timer()
 
