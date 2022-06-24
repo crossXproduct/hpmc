@@ -45,9 +45,9 @@ init()
 
 #RANDOMIZE
 # Initialize sim
-cpu = hoomd.device.CPU()
+gpu = hoomd.device.GPU()
 random_seed = int(random.randrange(0,65535))
-sim = hoomd.Simulation(device=cpu,seed=random_seed)
+sim = hoomd.Simulation(device=gpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1) #nselect is # of trial moves per timestep. Flenner uses 1.
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
@@ -68,9 +68,9 @@ hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 
 #COMPRESS
-cpu = hoomd.device.CPU()
+gpu = hoomd.device.GPU()
 random_seed = int(random.randrange(0,65535))
-sim = hoomd.Simulation(device=cpu, seed=random_seed)
+sim = hoomd.Simulation(device=gpu, seed=random_seed)
 sim.create_state_from_gsd(filename='random.gsd')
 
 # Calculate initial volume fraction
@@ -114,9 +114,9 @@ print('Setup time: ',inittime)
 
 #EQUILIBRATE
 # Initialize sim
-cpu = hoomd.device.CPU()
+gpu = hoomd.device.GPU()
 random_seed = int(random.randrange(0,65535))
-sim = hoomd.Simulation(device=cpu,seed=random_seed)
+sim = hoomd.Simulation(device=gpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1)
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
@@ -151,9 +151,9 @@ print('Equilibration time: ',timeit.default_timer()-starttime)
 
 #RUN
 #Set up simulation
-cpu = hoomd.device.CPU()
+gpu = hoomd.device.GPU()
 random_seed = int(random.randrange(0,65535))
-sim = hoomd.Simulation(device=cpu,seed=random_seed)
+sim = hoomd.Simulation(device=gpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1)
 mc.shape['sphere1'] = dict(diameter=1.0)
 mc.shape['sphere2'] = dict(diameter=1.4)
@@ -174,11 +174,14 @@ filesteps = rate*filetime
 # Run sim
 nfiles = 1
 while sim.timestep < s_run:
-    if timeit.default_timer() - starttime + filetime >= walltime: break #stop run if next file exceeds walltime, so DCD files will be saved
+    if timeit.default_timer() - starttime + filetime >= walltime:
+        print("Could not save more trajectories...walltime limit exceeded. Exiting...")
+        break #stop run if next file exceeds walltime, so DCD files will be saved
     dcd_writer = hoomd.write.DCD(filename='traj'+str(nfiles)+'.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
     sim.operations.writers[0] = dcd_writer
     sim.run(filesteps)
     print("saving traj"+str(nfiles)+'.dcd')
+    print("snapshot=",sim.timestep)
     nfiles += 1
 stoptime = timeit.default_timer()
 
