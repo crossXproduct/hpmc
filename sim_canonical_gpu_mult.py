@@ -135,17 +135,18 @@ mc.d['sphere2'] = 0.06952022426028356
 
 # Run equilibration
 sim.run(s_eq)
-equiltime = timeit.default_timer() - inittime
-print(timeit.default_timer())
-print(inittime)
-print(equiltime)
+#equiltime = timeit.default_timer() - inittime
+#print(timeit.default_timer())
+#print(inittime)
+#print(equiltime)
 equilsteps = sim.timestep
+equiltime = timeit.default_timer()-starttime
 rate = equilsteps/equiltime #number of mc steps performed per second
 print("step rate ",rate)
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
 print("attempted moves: ",sum(mc.translate_moves)/int(N_particles))
-print('Equilibration time: ',equiltime)
+print('Equilibration time: ',timeit.default_timer()-starttime)
 
 #RUN
 #Set up simulation
