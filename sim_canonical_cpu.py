@@ -169,7 +169,7 @@ run = 1;
 while sim.timestep < s_run:
     dcd_writer = hoomd.write.DCD(filename='traj' + str(run) + '.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
     sim.operations.writers.append(dcd_writer)
-    sim.run(min((s_run-sim.timestep,s_run/5)))
+    sim.run(int(min(s_run-sim.timestep,s_run/5)))
     print(min(s_run-sim.timestep,s_run/5))
     run += 1;
 stoptime = timeit.default_timer()
