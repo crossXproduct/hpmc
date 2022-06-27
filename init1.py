@@ -17,8 +17,9 @@ starttime = timeit.default_timer()
 random_seed = int(random.randrange(0,65535))
 
 N_particles = int(sys.argv[1]) #use an even number
-t_sim = int(sys.argv[2]) # = 4.2e6 for 0.58
-volume_fraction = np.double(sys.argv[3])
+s_eq = int(sys.argv[2])
+s_run = int(sys.argv[3]) # = 4.2e6 for 0.58
+volume_fraction = np.double(sys.argv[4])
 #fill in more modifiable vars here
 
 #INITIALIZE
@@ -132,8 +133,8 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename='compressed.gsd')
 
 # Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='equilibrated.dcd',trigger=hoomd.trigger.Periodic(int(t_sim/10)))
-sim.operations.writers.append(dcd_writer)
+gsd_writer = hoomd.write.GSD(filename='equilibrated.gsd',trigger=hoomd.trigger.Periodic(int(s_eq/10)))
+sim.operations.writers.append(gsd_writer)
 
 # Tune sim step size
 tune = hoomd.hpmc.tune.MoveSize.scale_solver(
@@ -155,16 +156,27 @@ translate_moves = mc.translate_moves
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
 print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
-
+#equilibrate
+sim.run(s_eq)
 #set up GCE updater
 #grand_canonical = hoomd.hpmc.update.MuVT(['sphere1','sphere2'])
 #sim.operations.updaters.append(grand_canonical)
 #narray = list()
 
+#run
+cpu = hoomd.device.CPU()
+sim = hoomd.Simulation(device=cpu,seed=random_seed)
+mc = hoomd.hpmc.integrate.Sphere(nselect=1)
+mc.shape['sphere1'] = dict(diameter=1.0)
+mc.shape['sphere2'] = dict(diameter=1.4)
+sim.operations.integrator = mc
+
+gsd_writer = hoomd.write.DCD(filename='trajectory.dcd',trigger=hoomd.trigger.Periodic(int(s_run/10)))
+sim.operations.writers.append(gsd_writer)
 # Run simulation
 equiltime = timeit.default_timer()
-sim.run(t_sim)
-    #narray.append(sum(grand_canonical.N))
+sim.run(s_run)
+#narray.append(sum(grand_canonical.N))
 stoptime = timeit.default_timer()
 #print(narray[0:20])
 print('Iterations: ',sum(mc.translate_moves)/int(N_particles))
