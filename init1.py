@@ -173,6 +173,8 @@ sim.operations.integrator = mc
 
 gsd_writer = hoomd.write.DCD(filename='trajectory.dcd',trigger=hoomd.trigger.Periodic(int(s_run/10)))
 sim.operations.writers.append(gsd_writer)
+sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
+sim.create_state_from_gsd(filename='equilibrated.gsd')
 # Run simulation
 equiltime = timeit.default_timer()
 sim.run(s_run)
