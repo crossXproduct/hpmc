@@ -170,7 +170,7 @@ mc.d['sphere2'] = 0.06952022426028356
 # Run sim
 starttime = timeit.default_timer()
 run = 1;
-file_points=ceil(s_run/5/writing_interval)*writing_interval
+file_points=math.ceil(s_run/5/writing_interval)*writing_interval
 
 while sim.timestep < s_run:
     dcd_writer = hoomd.write.DCD(filename='traj' + str(run) + '.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
