@@ -167,7 +167,8 @@ while sim.timestep < s_run:
     sim.operations.writers.append(dcd_writer)
     steps = int(min(s_run-sim.timestep,s_run/5))
     sim.run(steps)
-    print(steps)
+    print("srun=",srun)
+    print("steps=",steps)
     run += 1;
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
