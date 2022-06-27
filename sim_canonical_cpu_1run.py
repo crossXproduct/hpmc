@@ -21,7 +21,7 @@ writing_interval = int(sys.argv[5])
 #fill in more modifiable vars here
 
 starttime = timeit.default_timer()
-random_seed = int(random.randrange(0,65535))#int(random.randrange(0,65535))
+random_seed = 20#int(random.randrange(0,65535))
 
 #INITIALIZE
 def init():
@@ -94,6 +94,7 @@ final_volume_fraction = volume_fraction
 final_box.volume = sim.state.N_particles / 2 * (V_particle1 + V_particle2) / final_volume_fraction
 compress = hoomd.hpmc.update.QuickCompress(trigger=hoomd.trigger.Periodic(10), target_box=final_box)
 sim.operations.updaters.append(compress)
+print("box length = ",final_box.volume**(1.0/3.0))
 
 # Set max step size
 mc.d['sphere1'] = 0.06952022426028356 #optimized for phi=0.59
@@ -127,6 +128,9 @@ sim.operations.integrator = mc
 sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
 sim.create_state_from_gsd(filename='compressed.gsd')
 
+# Set up trajectory writer
+gsd_writer = hoomd.write.GSD(filename='equilibrated.gsd',trigger=hoomd.trigger.Periodic(writing_interval))
+sim.operations.writers.append(gsd_writer)
 
 # Set sim step size
 mc.d['sphere1'] = 0.06952022426028356
@@ -135,7 +139,6 @@ mc.d['sphere2'] = 0.06952022426028356
 # Run equilibration
 equiltime = timeit.default_timer()
 sim.run(s_eq)
-hoomd.write.GSD.write(state=sim.state, mode='xb', filename='equilibrated.gsd')
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
@@ -157,7 +160,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
+dcd_writer = hoomd.write.DCD(filename='trajectory_fix.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
 sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
@@ -167,11 +170,6 @@ mc.d['sphere2'] = 0.06952022426028356
 # Run sim
 starttime = timeit.default_timer()
 sim.run(s_run)
-#run = 1;
-#while sim.timestep < s_run:
-#steps = int(min(s_run-sim.timestep,s_run/5))
-#sim.run(s_run)
-
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
