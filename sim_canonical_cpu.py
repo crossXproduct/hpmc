@@ -127,10 +127,6 @@ sim.operations.integrator = mc
 sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must be reset BEFORE setting a sim state.
 sim.create_state_from_gsd(filename='compressed.gsd')
 
-# Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
-sim.operations.writers.append(dcd_writer)
-
 # Set sim step size
 mc.d['sphere1'] = 0.06952022426028356
 mc.d['sphere2'] = 0.06952022426028356
@@ -138,6 +134,7 @@ mc.d['sphere2'] = 0.06952022426028356
 # Run equilibration
 equiltime = timeit.default_timer()
 sim.run(s_eq)
+hoomd.write.GSD.write(state=sim.state, mode='xb', filename='equilibrated.gsd')
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
@@ -159,7 +156,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-dcd_writer = hoomd.dump.dcd(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
+dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
 sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
@@ -168,8 +165,12 @@ mc.d['sphere2'] = 0.06952022426028356
 
 # Run sim
 starttime = timeit.default_timer()
+run = 1;
 while sim.timestep < s_run:
+    dcd_writer = hoomd.write.DCD(filename='traj' + str(run) + '.dcd', trigger=hoomd.trigger.Periodic(writing_interval), unwrap_full=True, unwrap_rigid=True)
+    sim.operations.writers.append(dcd_writer)
     sim.run(min((s_run-sim.timestep,s_run/5)))
+    run += 1;
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
