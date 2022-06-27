@@ -168,7 +168,8 @@ mc.d['sphere2'] = 0.06952022426028356
 
 # Run sim
 starttime = timeit.default_timer()
-sim.run(s_run)
+while sim.timestep < s_run:
+    sim.run(s_run/5)
 stoptime = timeit.default_timer()
 print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
 print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
