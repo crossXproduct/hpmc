@@ -44,12 +44,12 @@ def init():
     print(snapshot.particles.types)
     with gsd.hoomd.open(name='lattice.gsd',mode='xb') as f:
         f.append(snapshot)
-init()
+cpu = hoomd.device.CPU()
+if cpu.communicator.rank == 0: init()
 
 
 #RANDOMIZE
 # Initialize sim
-cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1) #nselect is # of trial moves per timestep. Flenner uses 1.
 mc.shape['sphere1'] = dict(diameter=1.0)
@@ -60,11 +60,12 @@ sim.create_state_from_gsd(filename='lattice.gsd')
 
 initial_snapshot = sim.state.get_snapshot()
 sim.run(10e3)
-print(mc.translate_moves[0] / sum(mc.translate_moves))
-print(mc.overlaps)
 final_snapshot = sim.state.get_snapshot()
-print(initial_snapshot.particles.position[0:4])
-print(final_snapshot.particles.position[0:4])
+if cpu.communicator.rank == 0 and final_snapshot.communicator == 0:
+    print(mc.translate_moves[0] / sum(mc.translate_moves))
+    print(mc.overlaps)
+    print(initial_snapshot.particles.position[0:4])
+    print(final_snapshot.particles.position[0:4])
 
 #f = os.system("touch random.gsd")
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
@@ -79,7 +80,7 @@ sim.create_state_from_gsd(filename='random.gsd')
 V_particle1 = 4.0/3.0*math.pi*(mc.shape['sphere1']['diameter']/2)**3
 V_particle2 = 4.0/3.0*math.pi*(mc.shape['sphere2']['diameter']/2)**3
 initial_volume_fraction = (sim.state.N_particles / 2 * (V_particle1 + V_particle2) / sim.state.box.volume)
-print(initial_volume_fraction)
+if cpu.communicator.rank == 0: print(initial_volume_fraction)
 
 # Assign integrator
 mc = hoomd.hpmc.integrate.Sphere(nselect=1)
@@ -103,15 +104,16 @@ mc.d['sphere2'] = 0.06952022426028356
 # Run compression
 while not compress.complete and sim.timestep < 1e6:
     sim.run(1000)
-print(sim.timestep)
+if cpu.communicator.rank == 0: print(sim.timestep)
 if not compress.complete:
     raise RuntimeError("Compression failed to complete")
-print(mc.d['sphere1'])
-print(mc.d['sphere2'])
+if cpu.communicator.rank == 0:
+    print(mc.d['sphere1'])
+    print(mc.d['sphere2'])
 
 # Write compressed state to file
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='compressed.gsd')
-print(sim.state.get_snapshot().particles.position[0:4])
+if cpu.communicator.rank == 0: print(sim.state.get_snapshot().particles.position[0:4])
 
 
 #EQUILIBRATE
@@ -139,11 +141,12 @@ mc.d['sphere2'] = 0.06952022426028356
 equiltime = timeit.default_timer()
 sim.run(s_eq)
 stoptime = timeit.default_timer()
-print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
-print("attempted moves: ",sum(mc.translate_moves)/int(N_particles))
-print('Setup time: ',equiltime-starttime)
-print('Equilibration time: ',stoptime-equiltime)
+if cpu.communicator.rank == 0:
+    print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+    print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
+    print("attempted moves: ",sum(mc.translate_moves)/int(N_particles))
+    print('Setup time: ',equiltime-starttime)
+    print('Equilibration time: ',stoptime-equiltime)
 
 #RUN
 #Set up simulation
@@ -159,7 +162,7 @@ sim.timestep=0 #timestep automatically accumulates over runs unless reset. Must 
 sim.create_state_from_gsd(filename="equilibrated.gsd")
 
 # Set up trajectory writer
-dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval))
+dcd_writer = hoomd.write.DCD(filename='trajectory.dcd', trigger=hoomd.trigger.Periodic(writing_interval),unwrap_full=True)
 sim.operations.writers.append(dcd_writer)
 
 # Set sim step size
@@ -179,15 +182,16 @@ if cpu.communicator.rank == 0:
 # Print the number of particles on each rank.
 with sim.state.cpu_local_snapshot as snap:
     N = len(snap.particles.position)
-    print(f'{N} particles on rank {device.communicator.rank}')
+    if cpu.communicator.rank == 0: print(f'{N} particles on rank {device.communicator.rank}')
 
 # Run sim
 starttime = timeit.default_timer()
 sim.run(s_run)
 stoptime = timeit.default_timer()
-print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
-print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
-print('Run time: ',stoptime-starttime)
+if cpu.communicator.rank == 0:
+    print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+    print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
+    print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
+    print('Run time: ',stoptime-starttime)
 
 #DONE! Now on to analysis...
