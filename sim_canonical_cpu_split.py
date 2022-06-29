@@ -44,7 +44,8 @@ def init():
     print(snapshot.particles.types)
     with gsd.hoomd.open(name='lattice.gsd',mode='xb') as f:
         f.append(snapshot)
-init()
+cpu = hoomd.device.CPU()
+if cpu.communicator.rank == 0: init()
 
 
 #RANDOMIZE
@@ -177,10 +178,10 @@ stoptime = timeit.default_timer()
 #print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
 #print('Run time: ',stoptime-starttime)
 
+cpu = hoomd.device.CPU()
 #RUN
 def splitrun(steps,run_num):
     #Set up simulation
-    cpu = hoomd.device.CPU()
     sim = hoomd.Simulation(device=cpu,seed=random_seed)
     mc = hoomd.hpmc.integrate.Sphere(nselect=1)
     mc.shape['sphere1'] = dict(diameter=1.0)
@@ -202,9 +203,9 @@ def splitrun(steps,run_num):
     mc.d['sphere2'] = 0.06952022426028356
 
     # Run sim
-    starttime = timeit.default_timer()
+    #starttime = timeit.default_timer()
     sim.run(runsteps)
-    stoptime = timeit.default_timer()
+    #stoptime = timeit.default_timer()
     #print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
     #print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
     #print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
