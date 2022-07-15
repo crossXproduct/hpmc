@@ -1,7 +1,7 @@
 #TITLE: init1.py
-#MODIFIED: 22-05-23
+#MODIFIED: 22-06-15
 #DESCRIPTION: Set up and run a simulation with 4 particles and volume fraction 0.57.
-
+#CHANGES: random seed is now randomly generated
 import itertools
 import math
 import numpy as np
@@ -21,7 +21,7 @@ writing_interval = int(sys.argv[5])
 #fill in more modifiable vars here
 
 starttime = timeit.default_timer()
-random_seed = 20#int(random.randrange(0,65535))
+random_seed = int(random.randrange(0,65535))
 
 #INITIALIZE
 def init():
