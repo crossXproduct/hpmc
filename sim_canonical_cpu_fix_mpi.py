@@ -60,13 +60,13 @@ sim.create_state_from_gsd(filename='lattice.gsd')
 
 initial_snapshot = sim.state.get_snapshot()
 sim.run(10e3)
-if cpu.communicator.rank == 0:
-    print(mc.translate_moves[0] / sum(mc.translate_moves))
-    print(mc.overlaps)
+#if cpu.communicator.rank == 0:
+    #print(mc.translate_moves[0] / sum(mc.translate_moves))
+    #print(mc.overlaps)
 final_snapshot = sim.state.get_snapshot()
-if cpu.communicator.rank == 0:
-    print(initial_snapshot.particles.position[0:4])
-    print(final_snapshot.particles.position[0:4])
+#if cpu.communicator.rank == 0:
+    #print(initial_snapshot.particles.position[0:4])
+    #print(final_snapshot.particles.position[0:4])
 
 #f = os.system("touch random.gsd")
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
@@ -109,10 +109,10 @@ while not compress.complete and sim.timestep < 1e6:
 
 if not compress.complete:
     raise RuntimeError("Compression failed to complete")
-if cpu.communicator.rank == 0:
-    print(sim.timestep)
-    print(mc.d['sphere1'])
-    print(mc.d['sphere2'])
+#if cpu.communicator.rank == 0:
+    #print(sim.timestep)
+    #print(mc.d['sphere1'])
+    #print(mc.d['sphere2'])
 
 # Write compressed state to file
 hoomd.write.GSD.write(state=sim.state, mode='xb', filename='compressed.gsd')
@@ -144,12 +144,12 @@ mc.d['sphere2'] = 0.06952022426028356
 equiltime = timeit.default_timer()
 sim.run(s_eq)
 stoptime = timeit.default_timer()
-if cpu.communicator.rank == 0:
-    print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-    print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
-    print("attempted moves: ",sum(mc.translate_moves)/int(N_particles))
-    print('Setup time: ',equiltime-starttime)
-    print('Equilibration time: ',stoptime-equiltime)
+#if cpu.communicator.rank == 0:
+    #print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+    #print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
+    #print("attempted moves: ",sum(mc.translate_moves)/int(N_particles))
+    #print('Setup time: ',equiltime-starttime)
+    #print('Equilibration time: ',stoptime-equiltime)
 
 #RUN
 #Set up simulation
@@ -176,10 +176,10 @@ mc.d['sphere2'] = 0.06952022426028356
 starttime = timeit.default_timer()
 sim.run(s_run)
 stoptime = timeit.default_timer()
-if cpu.communicator.rank == 0:
-    print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-    print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
-    print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
-    print('Run time: ',stoptime-starttime)
+#if cpu.communicator.rank == 0:
+    #print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
+    #print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
+    #print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
+    #print('Run time: ',stoptime-starttime)
 
 #DONE! Now on to analysis...
