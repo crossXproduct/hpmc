@@ -196,10 +196,16 @@ mc.d['sphere2'] = 0.06952022426028356
 starttime = timeit.default_timer()
 sim.run(s_run)
 stoptime = timeit.default_timer()
-#if cpu.communicator.rank == 0:
-    #print("acceptance fraction: ",mc.translate_moves[0]/sum(mc.translate_moves))
-    #print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
-    #print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
-    #print('Run time: ',stoptime-starttime)
 if cpu.communicator.rank == 0: print("DONE")
+acceptance_fraction = mc.translate_moves[0]/sum(mc.translate_moves)
+sphere1 = mc.d['sphere1']
+sphere2 = mc.d['sphere2']
+attempted_moves = sum(mc.translate_moves)/int(N_particles)
+if cpu.communicator.rank == 0:
+    print("acceptance fraction: ",acceptance_fraction)
+    print("step size max ",sphere1,sphere2)
+    print("elapsed 'time' (attempted moves): ",attempted_moves)
+    print("Production time: ",stoptime-equiltime-inittime-starttime)
+    print('Run time: ',stoptime-starttime)
+
 #DONE! Now on to analysis...
