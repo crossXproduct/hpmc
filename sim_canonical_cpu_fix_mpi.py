@@ -50,6 +50,7 @@ if cpu.communicator.rank == 0: init()
 
 #RANDOMIZE
 # Initialize sim
+if cpu.communicator.rank == 0: print("Initializing")
 sim = hoomd.Simulation(device=cpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1) #nselect is # of trial moves per timestep. Flenner uses 1.
 mc.shape['sphere1'] = dict(diameter=1.0)
@@ -73,6 +74,7 @@ hoomd.write.GSD.write(state=sim.state, mode='xb', filename='random.gsd')
 
 
 #COMPRESS
+if cpu.communicator.rank == 0: print("Compressing")
 cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu, seed=random_seed)
 sim.create_state_from_gsd(filename='random.gsd')
@@ -121,6 +123,7 @@ if cpu.communicator.rank == 0: print(sim.state.get_snapshot().particles.position
 
 #EQUILIBRATE
 # Initialize sim
+if cpu.communicator.rank == 0: print("Equilibrating")
 cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1)
@@ -153,6 +156,7 @@ stoptime = timeit.default_timer()
 
 #RUN
 #Set up simulation
+if cpu.communicator.rank == 0: print("Running")
 cpu = hoomd.device.CPU()
 sim = hoomd.Simulation(device=cpu,seed=random_seed)
 mc = hoomd.hpmc.integrate.Sphere(nselect=1)
@@ -181,5 +185,5 @@ stoptime = timeit.default_timer()
     #print("step size max ",mc.d['sphere1'],mc.d['sphere2'])
     #print("elapsed 'time' (attempted moves): ",sum(mc.translate_moves)/int(N_particles))
     #print('Run time: ',stoptime-starttime)
-
+if cpu.communicator.rank == 0: print("DONE")
 #DONE! Now on to analysis...
